@@ -7,11 +7,11 @@ const AddProject: React.FC = () => {
         id: null,
         projectName: "",
         projectDescription: "",
+        finished: false
     };
 
     const [projeto, setProjeto] = useState<IProjetosData>(initialProjectState);
     const [submitted, setSubmitted] = useState<boolean>(false);
-
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setProjeto({ ...projeto, [name]: value });
@@ -26,7 +26,8 @@ const AddProject: React.FC = () => {
             setProjeto({
                 id: response.data.id,
                 projectName: response.data.projectName,
-                projectDescription: response.data.projectDescription
+                projectDescription: response.data.projectDescription,
+                finished: response.data.finished
             });
             setSubmitted(true);
             console.log(response.data);

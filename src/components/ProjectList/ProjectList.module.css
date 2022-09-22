@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.projectList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.projectList h4 {
+
+}
+
+.listGroup {
+    background: #3399ff;
+    padding: 20px;
+}
+
+.listGroup li {
+    background: #cce5ff;
+    color: darkblue;
+    margin: 3px;
+    list-style-type: none;
+}
+
+.project {
+    display: flex;
+    flex-direction: column;
+}
+
+.project div {
+    background: #ffe5e5;
+    padding: 20px;
+}

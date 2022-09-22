@@ -1,7 +1,9 @@
 import React , {useState , useEffect , ChangeEvent} from "react";
-import ProjetosService from "../services/ProjetosService";
-import IProjetosData from "../types/Projetos";
+import ProjetosService from "../../services/ProjetosService";
+import IProjetosData from "../../types/Projetos";
 import { Link } from "react-router-dom";
+import style from "./ProjectList.module.css"
+
 
 const ProjectList: React.FC = () => {
     const [projetos , setProjetos] = useState<Array<IProjetosData>>([]);
@@ -20,23 +22,18 @@ const ProjectList: React.FC = () => {
                 console.log(e);
             });
     };
-    const refreshList = () =>{
-        retrieveProject();
-        setCurrentProject(null);
-        setCurrentIndex(-1);
-    };
     const setActiveProject = (projeto: IProjetosData , index: number) => {
         setCurrentProject(projeto);
         setCurrentIndex(index);
     };
     return(
-        <div className="list row">
-            <div className="col-md-6">
+        <div className={style.container}>
+            <div className={style.projectList}>
                 <h4>Lista de Projetos</h4>
-                <ul className="list-group">
+                <ul className={style.listGroup}>
                     {projetos && projetos.map((projeto , index)=> (
                         <li
-                            className={"list-group -item" +(index === currentIndex ? "active" : "")}
+                            className={(index === currentIndex ? "active" : "")}
                             onClick={() => setActiveProject(projeto , index)}
                             key={index}
                         >
@@ -45,7 +42,7 @@ const ProjectList: React.FC = () => {
                     ))}
                 </ul>
             </div>
-            <div className="col-md-6">
+            <div className={style.project}>
                 {currentProject ? (
                     <div>
                         <h4>Projeto</h4>
@@ -61,8 +58,15 @@ const ProjectList: React.FC = () => {
                             </label>{" "}
                             {currentProject.projectDescription}
                         </div>
+                        <div>
+                            <label>
+                                <strong>Status:</strong>
+                            </label>{" "}
+                            {currentProject.finished ? "Finished" : "Pending"}
+                        </div>
                         <Link
                             to={"/projetos/" + currentProject.id}
+                            className = "badge badge-warning"
                         >Edit</Link>
                     </div>
                 ) : (

@@ -1,8 +1,9 @@
 import React from "react";
 
 const HomeOda: React.FC = () => {
-    return(
+    return (
         <div>
+            
         </div>
     );
 };

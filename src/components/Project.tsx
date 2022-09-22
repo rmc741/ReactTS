@@ -10,6 +10,7 @@ const Project: React.FC = () => {
         id: null,
         projectName: "",
         projectDescription: "",
+        finished: null
     };
     const [currentProject, setCurrentProject] = useState<IProjetosData>(initialProjectState);
     const [message, setMessage] = useState<string>("");
@@ -17,10 +18,9 @@ const Project: React.FC = () => {
         ProjetosService.get(id).then((response: any) => {
             setCurrentProject(response.data);
             console.log(response.data);
-        })
-            .catch((e: Error) => {
+        }).catch((e: Error) => {
                 console.log(e);
-            });
+        });
     };
 
     useEffect(() => {
@@ -32,6 +32,22 @@ const Project: React.FC = () => {
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setCurrentProject({ ...currentProject, [name]: value });
+    };
+
+    const updateFinished = (status: boolean) => {
+        var data = {
+            id: currentProject.id,
+            projectName: currentProject.projectName,
+            projectDescription: currentProject.projectDescription,
+            finished: status
+        };
+        ProjetosService.update(currentProject.id, data).then((response: any) => {
+            console.log(response.data);
+            setCurrentProject({...currentProject, finished: status});
+            setMessage("Status alterado com sucesso!");
+        }).catch((e: Error) => {
+            console.log(e);
+        });
     };
 
     const updateProject = () => {
@@ -83,7 +99,22 @@ const Project: React.FC = () => {
                                 onChange={handleInputChange}
                             />
                         </div>
+                        <div className="form-group">
+                            <label>
+                                <strong>Status:</strong>
+                            </label>
+                            {currentProject.finished ? "Finished" : "Pending"}
+                        </div>
                     </form>
+                    {currentProject.finished ? (
+                        <button className="badge badge-primary mr-2" onClick={() => updateFinished(false)}>
+                            UnFinished
+                        </button>
+                    ) : (
+                        <button className="badge badge-primary mr-2" onClick={() => updateFinished(true)}>
+                            Finished
+                        </button>
+                    )}
                     <button className="badge badge-danger mr-2" onClick={deleteProject}>
                         Delete
                     </button>
@@ -94,6 +125,7 @@ const Project: React.FC = () => {
                     >
                         Update
                     </button>
+                    <p>{message}</p>
                 </div>
             ) : (
                 <div>
